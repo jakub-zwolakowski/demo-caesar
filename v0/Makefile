@@ -15,8 +15,8 @@ cov:
 
 .PHONY: tis
 tis:
-	@echo -e "\\x1b[00;36mtis-analyzer-gui -64 -I . -val -slevel 1000 caesar.c main.c -no-val-print -val-split-return-function caesar_encrypt:full,caesar_decrypt:full\\x1b[00m"
-	@tis-analyzer-gui -64 -I . -val -slevel 1000 caesar.c main.c -no-val-print -val-split-return-function caesar_encrypt:full,caesar_decrypt:full
+	@echo -e "\\x1b[00;36mtis-analyzer-gui -64 -cpp-extra-args=\"-I.\" -val -slevel 100 -val-malloc-returns-null caesar.c main.c\\x1b[00m"
+	@tis-analyzer -gui -64 -cpp-extra-args="-I." -val -slevel 100 -val-malloc-returns-null caesar.c main.c
 
 .PHONY: clean
 clean:

@@ -43,26 +43,24 @@ Cipher text:  f d h v d u
 The user provides the string to encrypt as well as the corresponding
 shifting value, and the same applies for the decrypt version.
 
-The specificity of the `caesar_encrypt` function is that it always
-performs a shift to the right while the `caesar_decrypt` function
-always performs a shift to the left.
+The specificity of the `encrypt` function is that it always performs
+a shift to the right while the `decrypt` function always performs
+a shift to the left.
 
 ```c
 /* \brief Encrypt a string with a right shift specified by the user
    \param [in] str The string to encrypt
-   \param [in] str_len The length of the string str
-   \param [in] shift The right shift to perform
+   \param [in] d The right shift to perform
    \return The pointer to the encrypted string
 */
-char *caesar_encrypt(char *str, int str_len, int shift);
+char *encrypt(char *str, int d);
 
 /* \brief Decrypt a string with a left shift specified by the user
    \param [in] str The string to decrypt
-   \param [in] str_len The length of the string str
-   \param [in] shift The left shift to perform
+   \param [in] d The left shift to perform
    \return The pointer to the decrypted string
 */
-char *caesar_decrypt(char *str, int str_len, int shift);
+char *decrypt(char *str, int d);
 ```
 
 ## Test suite
@@ -71,7 +69,7 @@ A test driver has been written to check the functional correctness of
 the source code:
 
 ```
-∀ string str, int d, caesar_decrypt(caesar_encrypt(str, d), d) = str
+∀ string str, int d, decrypt(encrypt(str, d), d) = str
 ```
 
 The test driver performs two tests:
@@ -80,8 +78,8 @@ The test driver performs two tests:
 2. encrypt and decrypt a string with a positive shift value
 
 The two tests aim at covering all the source code and checking the
-source code specification (i.e. passing a negative value to
-`caesar_encrypt` should still perform a shift to the right).
+source code specification (i.e. passing a negative value to `encrypt`
+should still perform a shift to the right).
 
 ### Results
 
@@ -90,21 +88,21 @@ $ gcc -I. -fprofile-arcs -ftest-coverage caesar.c main.c && ./a.out
 
 Test 1: Shift with a negative input
 Encrypt text 'People of Earth, your attention please'
-Result:       Shrsoh ri Hduwk, brxu dwwhqwlrq sohdvh
-Decrypt text 'Shrsoh ri Hduwk, brxu dwwhqwlrq sohdvh'
-Result:       People of Earth, your attention please
+Result: Shrsoh ri Hduwk/ |rxu dwwhqwlrq sohdvh
+Decrypt text 'Shrsoh ri Hduwk/ |rxu dwwhqwlrq sohdvh'
+Result: People of Earth, your attention please
 
 Test 2: Shift with a positive input
 Encrypt text 'People of Earth, your attention please'
-Result:       Wlvwsl vm Lhyao, fvby haaluapvu wslhzl
-Decrypt text 'Wlvwsl vm Lhyao, fvby haaluapvu wslhzl'
-Result:       People of Earth, your attention please
+Result: Wlvwsl vm Lhy{o3 �v|y h{{lu{pvu wslhzl
+Decrypt text 'Wlvwsl vm Lhy{o3 �v|y h{{lu{pvu wslhzl'
+Result: People of Earth, your attention please
 ```
 
 ```
 $ gcov caesar.c
 
 File 'caesar.c'
-Lines executed:100.00% of 38
-Creating 'caesar.c.gcov'
+Lines executed:100.00% of 17
+caesar.c:creating 'caesar.c.gcov'
 ```
